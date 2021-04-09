@@ -18,20 +18,15 @@ if (isProd) {
 
 export default class AppUpdater {
   constructor(){
-    // if(process.env.NODE_ENV !== 'production'){
-    //   autoUpdater.updateConfigPath = path.join(__dirname, 'dev-app-update.yml')
-    // }
+    if(process.env.NODE_ENV !== 'production'){
+      autoUpdater.updateConfigPath = path.join(__dirname, 'dev-app-update.yml')
+    }
     log.transports.file.level = 'info'
-    autoUpdater.setFeedURL({
-      "provider": "github",
-      "owner": "nerdnickim",
-      "repo": "nextron-test",
-    })
-    autoUpdater.requestHeaders = { "PRIVATE-TOKEN" : "Personal"};
+    
+    
     autoUpdater.logger = log;
-    autoUpdater.fullChangelog = true;
     autoUpdater.allowDowngrade = true;
-    // autoUpdater.autoDownload = true;
+    autoUpdater.autoDownload = false;
     autoUpdater.checkForUpdatesAndNotify();
   }
 }
