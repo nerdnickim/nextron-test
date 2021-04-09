@@ -28,4 +28,4 @@ workflows:
       - build_test:
           filters:
             branches:
-              only: feature/circleci
+              only: main
