@@ -2,12 +2,14 @@
   "private": true,
   "name": "my-nextron-app",
   "description": "My application description",
-  "version": "0.0.0",
+  "version": "0.0.4",
   "author": "Yoshihide Shiono <shiono.yoshihide@gmail.com>",
   "main": "app/background.js",
   "scripts": {
     "dev": "nextron",
-    "build": "nextron build && electron-builder build",
+    "build": "nextron build",
+    "build:s": "nextron build && electron-builder build -p never",
+    "build:p": "yarn postinstall && yarn build && electron-builder build --publish always",
     "postinstall": "electron-builder install-app-deps",
     "package": "yarn build && electron-builder build --publish never",
     "s3": "nextron build && electron-builder build --publish always"
@@ -26,7 +28,8 @@
     "publish": {
       "provider": "github",
       "repo" : "nextron-test",
-      "owner": "nerdnickim"
+      "owner": "nerdnickim",
+      "token": "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"
     },
     "mac": {
       "target": [
@@ -56,7 +59,7 @@
           "path": "/Applications"
         }
       ],
-      "title": "BGMs"
+      "title": "test"
     },
     "win": {
       "target": [
@@ -68,11 +71,7 @@
           ]
         }
       ],
-      "publish": {
-        "provider": "github",
-      "repo" : "nextron-test",
-      "owner": "nerdnickim"
-      },
+      
       "icon": "build/icon-window.png"
     },
     "protocols": {

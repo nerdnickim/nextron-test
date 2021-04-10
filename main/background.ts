@@ -16,17 +16,21 @@ if (isProd) {
   app.setPath('userData', `${app.getPath('userData')} (development)`);
 }
 
+
 export default class AppUpdater {
   constructor(){
     if(process.env.NODE_ENV !== 'production'){
       autoUpdater.updateConfigPath = path.join(__dirname, 'dev-app-update.yml')
     }
-    log.transports.file.level = 'info'
+
     
+  
+    log.transports.file.level = 'info'
+  
     
     autoUpdater.logger = log;
     autoUpdater.allowDowngrade = true;
-    autoUpdater.autoDownload = false;
+    autoUpdater.autoDownload = true;
     autoUpdater.checkForUpdatesAndNotify();
   }
 }
@@ -209,6 +213,12 @@ function sendMessage(s) {
 // 업데이트 감지
 app.on("ready", async() => {
   // createMainWindow();
+  autoUpdater.setFeedURL({
+    "owner":"github",
+    "provider": "github",
+    "repo": "BGMs",
+    "token": "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"
+  })
   autoUpdater.checkForUpdates();
 })
 
@@ -231,6 +241,14 @@ autoUpdater.on('update-available', async () => {
 autoUpdater.on('update-not-available', async () => {
   console.log('update-not-available');
 });
+
+autoUpdater.on("download-progress", progressObj => {
+  let log_message = "Download speed: " + progressObj.bytesPerSecond;
+    log_message = log_message + ' - Downloaded ' + parseInt(progressObj.percent) + '%';
+    log_message = log_message + ' (' + progressObj.transferred + "/" + progressObj.total + ')';
+    mainWindow.webContents.send('progress', log_message);
+ });
+ 
 
 
 //다운로드 완료되면 업데이트
